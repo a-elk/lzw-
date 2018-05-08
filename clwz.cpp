@@ -11,7 +11,6 @@ map<string,short> create_dict(){
   map<string,short> dict;
   int a = 0;
   while(a < 256){
-    //cout << "a : " << (int)a << endl;
     dict.emplace(string(1,a),a);
     a++;
   }
@@ -54,55 +53,24 @@ void compress(char* myfile,char* file_created){
       string c;
       string p;
       while(i < buffer.end()){
-        cout << "*i : " <<hex<<(int)*i << endl;
         c.assign(1,*i);
-        cout << "c : " <<c << endl;
-        print_str(c,(char*)"c");
-        //cout << "c : "<<(short)c[0]<<endl;
-        //cout << "w : "<<w<<endl;
         p = w + c;
-        print_str(p,(char*)"p");
         map<string,short>::iterator f;
         f = dict.find(p);
-        if(f != dict.end()){
-          //cout << "dict[p] : " << dict[p] << endl;
+        if(f != dict.end())
           w = p;
-          cout << "found w : "<<w<<endl;
-        }
         else{
           dict.emplace(p,nb);
-          //cout << "dict[w] : " <<dict[w]<< endl;
-          for (int i = 0; i < w.size();++i){
-            cout << "w["<< i << "]  : " <<w[i]<<endl;
-          }
           short val = dict[w];
           cout << "val : "<< val << endl;
-          //bitset<16> x(val);
-          //cout << "Res : " << x << endl;
-          //x = x.to_ulong();
           bitset<16> x(val);
-          //cout << "debug : " << x << endl;
-          if(val < 256){
-            if(val > 64 && val < 127)//cout << "1 a ecrire : " << x << endl;
-              cout << "1 a ecrire : " << val << endl;
-            else
-              cout << "1 a ecrire : " << val << endl;
-            file2.write((char*)&val,2);
-          }
-          else{
-            cout << "a ecrire : " << val << endl;
-            file2.write((char*)&val,2);
-          }
+          file2.write((char*)&val,2);
           w = c;
-          // if(nb < (2^16))
           ++nb;
-          cout << "nb : "<< nb << endl;
         }
         ++i;
       }
     }
-  //print_map(dict);
-    //print_dict(dict);
 }
 
 int main(int argc,char* argv[]){
