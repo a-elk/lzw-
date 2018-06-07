@@ -120,7 +120,7 @@ void compress(char* myfile,char* file_created){
       int nb(257);
       string c;
       string p;
-      while(i != buffer.end()+1){
+      while(i != buffer.end()){
 	c.assign(1,*i);
 	p = w + c;
 	map<string,int>::iterator f;
@@ -140,6 +140,11 @@ void compress(char* myfile,char* file_created){
           int val = dict[w];
 	  file2.write((char*)&val,sizeof(int));
           w = c;
+	  if(i + 1 >= buffer.end()){
+	    file2.write((char*)&dict[w],sizeof(int));
+	    cout << "break "<<endl;
+	    break;
+	  }
           ++nb;
         }
         ++i;
